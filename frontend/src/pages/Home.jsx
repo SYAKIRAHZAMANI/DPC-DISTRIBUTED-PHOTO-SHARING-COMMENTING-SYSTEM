@@ -1,0 +1,13 @@
+import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Camera, ImagePlus, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import PhotoCard from '../components/PhotoCard';
+import SearchFilter from '../components/SearchFilter';
+import { api } from '../services/api';
+export default function Home(){const [photos,setPhotos]=useState([]);const [filters,setFilters]=useState({search:'',uploader:'',from:'',to:''});const [loading,setLoading]=useState(true);const [error,setError]=useState('');
+const query=useMemo(()=>new URLSearchParams(Object.entries(filters).filter(([,v])=>v.trim()).map(([k,v])=>[k,v])).toString(),[filters]);
+useEffect(()=>{let alive=true;setLoading(true);api(`/photos${query?`?${query}`:''}`).then(d=>{if(alive){setPhotos(d.photos);setError('');}}).catch(e=>alive&&setError(e.message)).finally(()=>alive&&setLoading(false));return()=>{alive=false};},[query]);
+const updatePhoto=updated=>setPhotos(old=>old.map(p=>p._id===updated._id?updated:p));const deletePhoto=async id=>{if(!confirm('Delete this photo? This cannot be undone.'))return;try{await api(`/photos/${id}`,{method:'DELETE'});setPhotos(old=>old.filter(p=>p._id!==id));}catch(e){setError(e.message)}};
+return <><Navbar/><main className="page-shell"><section className="welcome-row"><div><span className="eyebrow"><Sparkles size={14}/> A SPACE FOR YOUR CIRCLE</span><h1>Moments worth <em>sharing.</em></h1><p>Little snapshots, big memories. See what your friends are up to.</p></div><Link className="primary-button share-button" to="/upload"><ImagePlus size={18}/> Share a photo</Link></section><SearchFilter filters={filters} setFilters={setFilters}/><div className="feed-heading"><div><span className="eyebrow">THE COMMUNITY ALBUM</span><h2>Latest moments</h2></div><span className="result-count">{photos.length} {photos.length===1?'photo':'photos'}</span></div>{loading?<div className="empty-state"><div className="spinner"/>Loading your feed…</div>:error?<div className="empty-state error-state">{error}</div>:photos.length===0?<div className="empty-state"><div className="empty-icon"><Camera size={25}/></div><h3>No moments found just yet</h3><p>Try changing your filters, or be the first to share a photo.</p><Link to="/upload" className="text-link">Share your first photo →</Link></div>:<div className="photo-grid">{photos.map(photo=><PhotoCard key={photo._id} photo={photo} onUpdate={updatePhoto} onDelete={deletePhoto}/>)}</div>}<footer className="page-footer">Made for the moments that matter <span>✳</span></footer></main></>}
