@@ -1,0 +1,33 @@
+{
+  "base": "http://localhost:5001",
+  "at": "2026-11-04T18:14:23.516Z",
+  "users": 50,
+  "results": [
+    {
+      "scenario": "View feed (GET /api/photos)",
+      "users": 50,
+      "success": "50/50",
+      "errorRatePct": 0,
+      "avg": 945,
+      "median": 627,
+      "p95": 1531,
+      "min": 501,
+      "max": 1534,
+      "throughputReqPerSec": 32.5
+    },
+    {
+      "scenario": "Comment on same photo (POST)",
+      "users": 50,
+      "success": "50/50",
+      "errorRatePct": 0,
+      "avg": 2247,
+      "median": 2185,
+      "p95": 2834,
+      "min": 1975,
+      "max": 2838,
+      "throughputReqPerSec": 17.6
+    }
+  ],
+  "commentsExpected": 50,
+  "commentsFound": 50
+}
