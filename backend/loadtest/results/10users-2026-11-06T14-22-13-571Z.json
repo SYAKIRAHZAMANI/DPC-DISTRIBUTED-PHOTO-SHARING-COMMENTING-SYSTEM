@@ -1,0 +1,33 @@
+{
+  "base": "https://3-135-88-103.sslip.io",
+  "at": "2026-11-06T14:22:13.583Z",
+  "users": 10,
+  "results": [
+    {
+      "scenario": "View feed (GET /api/photos)",
+      "users": 10,
+      "success": "10/10",
+      "errorRatePct": 0,
+      "avg": 2057,
+      "median": 1751,
+      "p95": 2970,
+      "min": 1548,
+      "max": 2970,
+      "throughputReqPerSec": 3.4
+    },
+    {
+      "scenario": "Comment on same photo (POST)",
+      "users": 10,
+      "success": "10/10",
+      "errorRatePct": 0,
+      "avg": 2016,
+      "median": 1333,
+      "p95": 4764,
+      "min": 1261,
+      "max": 4764,
+      "throughputReqPerSec": 2.1
+    }
+  ],
+  "commentsExpected": 10,
+  "commentsFound": 10
+}
