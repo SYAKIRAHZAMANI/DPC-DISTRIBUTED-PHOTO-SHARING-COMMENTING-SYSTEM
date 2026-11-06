@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { protect } from '../middleware/auth.js';
+import { listGroups, createGroup, joinGroup, leaveGroup, deleteGroup } from '../controllers/groupController.js';
+const router = Router();
+router.use(protect);
+router.get('/', listGroups);
+router.post('/', createGroup);
+router.post('/join', joinGroup);
+router.post('/:id/leave', leaveGroup);
+router.delete('/:id', deleteGroup);
+export default router;
